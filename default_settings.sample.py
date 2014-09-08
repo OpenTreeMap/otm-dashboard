@@ -1,0 +1,5 @@
+DEBUG = True
+SECRET_KEY = ''
+CLIENT_ID = ''
+CLIENT_SECRET = ''
+SITE_URL = ''
