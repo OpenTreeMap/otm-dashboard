@@ -34,7 +34,7 @@ function initRepos() {
 function initIssues() {
     var url = apiUrl('https://api.github.com/orgs/OpenTreeMap/issues', {
             filter: 'all',
-            state: 'all',
+            state: 'closed',
             labels: 'unverified',
             sort: 'created'
         }),
