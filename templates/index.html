@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OpenTreeMap Dashboard</title>
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -22,12 +23,10 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li><a href="#repos" role="tab" data-toggle="tab">Repositories</a></li>
                 <li class="active"><a href="#issues" role="tab" data-toggle="tab">Issues</a></li>
             </ul>
-            <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane" id="repos">Loading...</div>
                 <div class="tab-pane active" id="issues">Loading...</div>
@@ -40,15 +39,14 @@
 <script src="static/js/bootstrap.min.js"></script>
 <script src="static/js/lodash.min.js"></script>
 <script src="static/js/moment.min.js"></script>
-
-<style type="text/css">
-.tab-pane { padding: 10px; }
-.label-color { padding: 2px 4px; font-weight: bold; border-radius: 2px; color: #fff; }
-.label-color.private { background-color: #f8eeca; color: #a1882b; }
-.issue .state.open { background-color: #6cc644; }
-.issue .state.closed { background-color: #bd2c00; }
-.issue .updated { color: #666; }
-</style>
+<script src="static/js/otm_dashboard.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    otm_dashboard.init({
+        access_token: '{{ access_token }}'
+    });
+});
+</script>
 
 <script type="text/template" id="header-tmpl">
     <h1>
@@ -97,72 +95,6 @@
             </div>
         <% }) %>
     <% }) %>
-</script>
-
-<script type="text/javascript">
-function init() {
-    initHeader();
-    initRepos();
-    initIssues();
-}
-
-function initHeader() {
-    var url = apiUrl('https://api.github.com/orgs/OpenTreeMap'),
-        tmpl = _.template($('#header-tmpl').html());
-    $.getJSON(url).then(function(data) {
-        $('#header').html(tmpl(data));
-    });
-}
-
-function initRepos() {
-    var url = apiUrl('https://api.github.com/orgs/OpenTreeMap/repos'),
-        tmpl = _.template($('#repos-tmpl').html());
-    $.getJSON(url).then(function(data) {
-        data = _.sortBy(data, function(repo) {
-            return repo.name.toLowerCase();
-        });
-        var html = tmpl({
-            repos: data
-        });
-        $('#repos').html(html);
-    });
-}
-
-function initIssues() {
-    var url = apiUrl('https://api.github.com/orgs/OpenTreeMap/issues', {
-            filter: 'all',
-            state: 'all',
-            labels: 'unverified',
-            sort: 'created'
-        }),
-        tmpl = _.template($('#issues-tmpl').html());
-    $.getJSON(url).then(function(data) {
-        data = _.sortBy(data, function(issue) {
-            return issue.repository.name.toLowerCase();
-        });
-        data = _.groupBy(data, function(issue) {
-            return issue.repository.name;
-        });
-        var html = tmpl({
-            grouped_issues: data
-        });
-        $('#issues').html(html);
-    });
-}
-
-function apiUrl(url, qsParts) {
-    qsParts = _.defaults({}, qsParts, {
-        access_token: '{{ access_token }}'
-    });
-    var qs = _.pairs(qsParts)
-        .map(function(pair) {
-            return pair[0] + '=' + pair[1];
-        })
-        .join('&');
-    return url + '?' + qs;
-}
-
-$(document).ready(init);
 </script>
 </body>
 </html>

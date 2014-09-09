@@ -1,0 +1,6 @@
+.tab-pane { padding: 10px; }
+.label-color { padding: 2px 4px; font-weight: bold; border-radius: 2px; color: #fff; }
+.label-color.private { background-color: #f8eeca; color: #a1882b; }
+.issue .state.open { background-color: #6cc644; }
+.issue .state.closed { background-color: #bd2c00; }
+.issue .updated { color: #666; }
