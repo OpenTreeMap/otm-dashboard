@@ -35,15 +35,14 @@
     </div>
 </div>
 
-<script src="static/js/jquery-1.11.1.min.js"></script>
-<script src="static/js/bootstrap.min.js"></script>
-<script src="static/js/lodash.min.js"></script>
-<script src="static/js/moment.min.js"></script>
-<script src="static/js/otm_dashboard.js"></script>
+<script src="static/js/lib/require.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    otm_dashboard.init({
-        access_token: '{{ access_token }}'
+require(['./static/js/common'], function() {
+    require(['bootstrap.min']);
+    require(['app/dashboard'], function(dashboard) {
+        dashboard.init({
+            access_token: '{{ access_token }}'
+        });
     });
 });
 </script>
