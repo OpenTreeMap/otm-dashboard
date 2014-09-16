@@ -25,7 +25,7 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li><a href="#repos" role="tab" data-toggle="tab">Repositories</a></li>
-                <li class="active"><a href="#issues" role="tab" data-toggle="tab">Issues</a></li>
+                <li class="active"><a href="#issues" role="tab" data-toggle="tab">Closed &amp; Unverified Issues</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane" id="repos">Loading...</div>
@@ -71,28 +71,21 @@ require(['./static/js/common'], function() {
 </script>
 
 <script type="text/template" id="issues-tmpl">
-    <p>All closed and unverified issues in the OTM organization.</p>
-    <% _.each(grouped_issues, function(issues, repo_name) { %>
+    <% _.each(issues, function(issue) { %>
         <div class="row issue">
             <div class="col-md-12">
-                <h4><%- repo_name %></h4>
+                <p>
+                    <span class="label-color state <%- issue.state %>"><%- issue.state %></span>
+                    <% _.each(issue.labels, function(label) { %>
+                        <span class="label-color" style="background-color: #<%- label.color %>"><%- label.name %></span>
+                    <% }) %>
+                    <a href="<%- issue.repository.html_url %>" class="dark-text"><%- issue.repository.name %></a> &mdash;
+                    <a href="<%- issue.html_url %>"><%- issue.title %> #<%- issue.number %></a>
+                    <span class="updated">
+                        updated <span title="<%- issue.updated_at %>"><%- moment(issue.updated_at).fromNow() %></span></span>
+                </p>
             </div>
         </div>
-        <% _.each(issues, function(issue) { %>
-            <div class="row issue">
-                <div class="col-md-12">
-                    <p>
-                        <span class="label-color state <%- issue.state %>"><%- issue.state %></span>
-                        <% _.each(issue.labels, function(label) { %>
-                            <span class="label-color" style="background-color: #<%- label.color %>"><%- label.name %></span>
-                        <% }) %>
-                        <a href="<%- issue.html_url %>"><%- issue.title %> #<%- issue.number %></a>
-                        <span class="updated">
-                            updated <span title="<%- issue.updated_at %>"><%- moment(issue.updated_at).fromNow() %></span></span>
-                    </p>
-                </div>
-            </div>
-        <% }) %>
     <% }) %>
 </script>
 </body>

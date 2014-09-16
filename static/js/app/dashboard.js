@@ -38,17 +38,6 @@ define(['lodash', 'jquery', 'moment'],
                 state: 'closed',
                 labels: 'unverified',
                 sort: 'created'
-            }),
-            tmpl = _.template($('#issues-tmpl').html());
-        $.getJSON(url).then(function(data) {
-            data = _.sortBy(data, function(issue) {
-                return issue.repository.name.toLowerCase();
-            });
-            data = _.groupBy(data, function(issue) {
-                return issue.repository.name;
-            });
-            var html = tmpl({
-                grouped_issues: data
             });
             $('#issues').html(html);
         });

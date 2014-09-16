@@ -4,3 +4,4 @@
 .issue .state.open { background-color: #6cc644; }
 .issue .state.closed { background-color: #bd2c00; }
 .issue .updated { color: #666; }
+.dark-text { color: #666; }
