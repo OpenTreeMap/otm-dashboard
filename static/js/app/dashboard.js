@@ -1,5 +1,5 @@
-define(['lodash', 'jquery', 'moment'],
-    function(_, $, moment) {
+define(['lodash', 'jquery', 'moment', './parseHeaders'],
+    function(_, $, moment, parseHeaders) {
 
     var access_token = null;
 
@@ -39,6 +39,26 @@ define(['lodash', 'jquery', 'moment'],
                 labels: 'unverified',
                 sort: 'created'
             });
+
+        $('#issues').delegate('.pagination a', 'click', function(e) {
+            e.preventDefault();
+            loadIssues(e.target.href);
+        });
+
+        loadIssues(url);
+    }
+
+    function loadIssues(url) {
+        var tmpl = _.template($('#issues-tmpl').html());
+        $.getJSON(url).then(function(data, status, xhr) {
+            var headers = parseHeaders(xhr.getAllResponseHeaders()),
+                html = tmpl({
+                    issues: data,
+                    firstPage: headers.firstPage,
+                    prevPage: headers.prevPage,
+                    nextPage: headers.nextPage,
+                    lastPage: headers.lastPage
+                });
             $('#issues').html(html);
         });
     }

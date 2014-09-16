@@ -71,6 +71,14 @@ require(['./static/js/common'], function() {
 </script>
 
 <script type="text/template" id="issues-tmpl">
+    <div class="row">
+        <ul class="pagination pagination-lg">
+            <li <%= !firstPage ? 'class="disabled"' : ''%>><a href="<%- firstPage %>">&laquo; First</a></li>
+            <li <%= !prevPage ? 'class="disabled"' : ''%>><a href="<%- prevPage %>">Previous</a></li>
+            <li <%= !nextPage ? 'class="disabled"' : ''%>><a href="<%- nextPage %>">Next</a></li>
+            <li <%= !lastPage ? 'class="disabled"' : ''%>><a href="<%- lastPage %>">Last &raquo;</a></li>
+        </ul>
+    </div>
     <% _.each(issues, function(issue) { %>
         <div class="row issue">
             <div class="col-md-12">
@@ -87,6 +95,14 @@ require(['./static/js/common'], function() {
             </div>
         </div>
     <% }) %>
+    <div class="row">
+        <ul class="pagination pagination-lg">
+            <li <%= !firstPage ? 'class="disabled"' : ''%>><a href="<%- firstPage %>">&laquo; First</a></li>
+            <li <%= !prevPage ? 'class="disabled"' : ''%>><a href="<%- prevPage %>">Previous</a></li>
+            <li <%= !nextPage ? 'class="disabled"' : ''%>><a href="<%- nextPage %>">Next</a></li>
+            <li <%= !lastPage ? 'class="disabled"' : ''%>><a href="<%- lastPage %>">Last &raquo;</a></li>
+        </ul>
+    </div>
 </script>
 </body>
 </html>
