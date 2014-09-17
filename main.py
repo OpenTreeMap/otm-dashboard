@@ -2,8 +2,12 @@ from flask import Flask, session, redirect, url_for, request, render_template
 import urlparse
 import requests
 
+from snippets import ReverseProxied
+
 app = Flask(__name__)
 app.config.from_object('default_settings')
+app.wsgi_app = ReverseProxied(app.wsgi_app)
+
 
 @app.route("/")
 def index():
@@ -11,7 +15,8 @@ def index():
     if not access_token:
         return redirect(url_for('login'))
     return render_template('index.html', access_token=access_token)
-    
+
+
 @app.route("/login")
 def login():
     if 'access_token' in session:
@@ -38,7 +43,8 @@ def login():
         qs = '&'.join(a + '=' + b for a, b in params.iteritems())
         url = 'https://github.com/login/oauth/authorize?' + qs
         return redirect(url)
-    
+
+
 @app.route('/logout')
 def logout():
     session.pop('access_token', None)
